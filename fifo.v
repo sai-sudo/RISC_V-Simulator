@@ -40,15 +40,24 @@ module fifo(
         read_ptr <= read_ptr+1;
         count <=count-1;
       end
-    if (rd_en && wr_en && (empty || full)
+    if (rd_en && wr_en)
       begin
-        memory[write_ptr]<= data_in;
-        write_ptr <=write_ptr+1;
-        count<=count+1;
-        
-        data_out<=memory[read_ptr];
-        read_ptr <=read_ptr+1;
-        count<=count-1;
+        if (empty) begin
+          // First writing 
+          memory[write_ptr] = data_in;
+          write_ptr = write_ptr+1;
+          //Then reading
+          data_out=memory[read_ptr];
+          read_ptr =read_ptr+1; 
+        end
+        else if (full) begin
+          //First reading
+          data_out = memory[read_ptr];
+          read_ptr = read_ptr+1;
+          //Then writing
+          memory[write_ptr] = data_in;
+          write_ptr = write_ptr+1;
+        end
       end
   end
   end
