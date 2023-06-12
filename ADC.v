@@ -16,7 +16,7 @@ module ADC(
       else if (counter < 8'b11111111)
         begin
           counter <= counter+1;
-          adc_result <= ad_result + analog_input;
+          adc_result <= adc_result + analog_input;
         end
       else begin
         counter <=8'b00000000;
